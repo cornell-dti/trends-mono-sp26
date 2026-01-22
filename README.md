@@ -1,3 +1,3 @@
-# [FA25] Trends for Web Development 
+# [SP26] Trends for Web Development 
 
-Monorepo for FA25
+Monorepo for SP26
