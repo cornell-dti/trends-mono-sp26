@@ -2,7 +2,7 @@
 const obj = { a: 1, b: 2, c: 3 };
 const { a, b: secondProp, d = 4 } = obj;
 
-// console.log([a, secondProp, d].join(", "));
+console.log([a, secondProp, d].join(", "));
 
 
 // Nested object destructuring
@@ -15,13 +15,13 @@ const {
     x: { y, z: depth },
 } = nestedObj;
 
-// console.log([y, depth].join(", ")); // what is this going to print?
+console.log([y, depth].join(", ")); // what is this going to print?
 
 
 // Array Destructuring
 const arr = [1, 2, 3, 4, 5];
 let [first, , third, ...rest] = arr;
-// console.log([first, third, rest].join("---"));
+console.log([first, third, rest].join("---"));
 
 
 // Destructuring in function parameters
@@ -29,7 +29,7 @@ function printPersonInfo({ name, age }) {
     console.log(`${name} is ${age} years old.`); // Notice the string interpolation 👀
 }
 
-// printPersonInfo({ name: "Alice", age: 30 });
+printPersonInfo({ name: "Alice", age: 30 });
 
 
 
