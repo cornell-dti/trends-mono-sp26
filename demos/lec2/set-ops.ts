@@ -17,7 +17,17 @@
  *   }
  */
 
-// TODO
+type Success = {
+    success: true;
+    data: string;
+}
+
+type Failure = {
+    success: false;
+    error: string;
+}
+
+type Result = Success | Failure;
 
 
 /** 
@@ -30,4 +40,12 @@
  * Create a new type called `Product` that requires a name and a price.
 */
 
-// TODO
+type HasName = {
+    name: string
+}
+
+type HasPrice = {
+    price: number
+}
+
+type Product = HasName & HasPrice;

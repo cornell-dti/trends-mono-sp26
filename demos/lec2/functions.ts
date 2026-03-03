@@ -18,6 +18,13 @@ interface OptionalRatingBook {
     ratings?: Ratings;
 }
 
-const CreateBook = () => {
-    // TODO
+const createBook = (title : string, author : Author, yearPublished : number, genres : object, available: boolean, ratings? : Ratings) : OptionalRatingBook => {
+    return {
+        title: title,
+        author: author,
+        yearPublished: yearPublished,
+        genres: genres,
+        available: available,
+        ratings: ratings
+    }
 }

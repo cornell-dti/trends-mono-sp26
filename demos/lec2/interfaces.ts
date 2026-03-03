@@ -1,5 +1,5 @@
 // How would you make an interface for this?
-const book = {
+const book : Book = {
     title: "The Pragmatic Programmer",
     author: {
         firstName: "Andrew",
@@ -8,8 +8,19 @@ const book = {
     yearPublished: 1999,
     genres: ["programming", "software engineering"],
     available: true,
-    ratings: {
-        average: 4.5,
-        count: 2150
+}
+
+interface Book {
+    title: string;
+    author : {
+        firstName: string;
+        lastName: string;
+    };
+    yearPublished: number;
+    genres: string[];
+    available: boolean;
+    ratings?: {
+        average: number;
+        count: number;
     }
 }
