@@ -129,3 +129,75 @@
 .toggle-switch.on .toggle-circle {
   left: 32px;
 }
+
+/* ── Theme toggle button ── */
+.themeToggleButton {
+  background: #4d7d92;
+  border-radius: 3px;
+  min-height: 2.5rem;
+  min-width: 12rem;
+  color: #fff;
+  border: none;
+  font-size: 16px;
+  margin-bottom: 2rem;
+  cursor: pointer;
+}
+
+/* ── Dark mode ── */
+.dark {
+  background-color: #1e1e1e;
+  color: #e0e0e0;
+  padding: 1rem;
+  border-radius: 8px;
+}
+
+.dark h1 {
+  color: #e0e0e0;
+}
+
+.dark .semesterBox {
+  background-color: #2a2a2a;
+  color: #e0e0e0;
+  border-color: #555;
+}
+
+.dark .semesterTitle {
+  color: #e0e0e0;
+}
+
+.dark .toggle-container p {
+  color: #e0e0e0;
+}
+
+.dark .courseSearchBar {
+  background-color: #3a3a3a;
+  color: #e0e0e0;
+  border: 1px solid #555;
+}
+
+.dark .dropdownMenu {
+  background-color: #3a3a3a;
+  color: #e0e0e0;
+}
+
+.dark .dropdownOption:hover {
+  background-color: #555;
+}
+
+.dark .courseCode {
+  color: #aaa;
+}
+
+.dark .courseTitle {
+  color: #e0e0e0;
+}
+
+.dark .newSemesterButton {
+  background: #6aaec8;
+  color: #1e1e1e;
+}
+
+.dark .themeToggleButton {
+  background: #6aaec8;
+  color: #1e1e1e;
+}
