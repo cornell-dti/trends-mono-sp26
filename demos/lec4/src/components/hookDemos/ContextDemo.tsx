@@ -1,7 +1,9 @@
-import { useState } from "react";
+import { createContext, useState, useContext } from "react";
+
+const CountContext = createContext<number>(0);
 
 const GrandchildComponent = () => {
-  const count = 0;
+  const count = useContext(CountContext);
 
   return (
     <div>
@@ -11,7 +13,7 @@ const GrandchildComponent = () => {
 };
 
 const ChildComponent = () => {
-  const count = 0;
+  const count = useContext(CountContext);
 
   return (
     <div>
@@ -22,7 +24,7 @@ const ChildComponent = () => {
 };
 
 const Component = () => {
-  const count = 0;
+  const count = useContext(CountContext);
 
   return (
     <div>
@@ -38,9 +40,11 @@ const ContextDemo = () => {
   return (
     <div>
       <h1>Context Demo</h1>
-      <button onClick={() => setCount(count + 1)}>Happy Birthday!</button>
-      <p>{`Grandparent: I am ${count + 90} years old.`}</p>
-      <Component />
+      <CountContext.Provider value={count}>
+        <button onClick={() => setCount(count + 1)}>Happy Birthday!</button>
+        <p>{`Grandparent: I am ${count + 90} years old.`}</p>
+        <Component />
+      </CountContext.Provider>
     </div>
   );
 };

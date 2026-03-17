@@ -10,6 +10,7 @@ type SemesterProps = {
 
 const Semester = ({ name, allCourses }: SemesterProps) => {
   const [courses, setCourses] = useState<Course[]>([]);
+  const [isMinimized, setIsMinimized] = useState<boolean>(false);
 
   const handleCourseSelection = (course: Course) => {
     setCourses([...courses, course]);
@@ -22,13 +23,17 @@ const Semester = ({ name, allCourses }: SemesterProps) => {
         {/* Activity 2: Add a slide toggle that minimizes the dropdown and all listed courses. */}
         <SlideToggle
           label={"minimize"}
-          onChange={() => console.log("Not yet implemented!")}
+          onChange={() => setIsMinimized(!isMinimized)}
         />
       </div>
-      <Dropdown options={allCourses} onChange={handleCourseSelection} />
-      {courses.map((course) => (
-        <CourseCard course={course} />
-      ))}
+      {!isMinimized && (
+        <>
+          <Dropdown options={allCourses} onChange={handleCourseSelection} />
+          {courses.map((course) => (
+            <CourseCard course={course} />
+          ))}
+        </>
+      )}
     </div>
   );
 };

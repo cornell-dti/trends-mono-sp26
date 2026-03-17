@@ -14,12 +14,17 @@ const CoursePlan = () => {
 
   return (
     <div>
-      {/* Activity 1: Implement the "New Semester" button to add a new semester  */}
       <button className="newSemesterButton" onClick={handleNewSemesterClick}>
         + New Semester
       </button>
       <div className="semesterContainer">
-        Semesters should be displayed here!
+        {makeArray(semesterCount).map((sem) => (
+          <Semester
+            key={sem}
+            name={`Semester ${sem + 1}`}
+            allCourses={COURSES}
+          />
+        ))}
       </div>
     </div>
   );

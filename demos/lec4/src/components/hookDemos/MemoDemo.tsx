@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 
 const NonMemoizedFib = () => {
   const [foo, setFoo] = useState(0);
@@ -30,9 +30,31 @@ const NonMemoizedFib = () => {
 };
 
 const MemoizedFib = () => {
+  const [foo, setFoo] = useState(0);
+  const [input, setInput] = useState(0);
+
+  const value = useMemo(() => {
+    const fib = (n: number): number => {
+      if (n <= 1) {
+        return 1;
+      }
+      return fib(n - 1) + fib(n - 2);
+    };
+    return fib(input);
+  }, [input]);
+
   return (
     <div>
-     <p>Not yet implemented!</p>
+      <button onClick={() => setFoo(foo + 1)}>Trigger re-render</button>
+      <input
+        type="number"
+        placeholder="enter the name here"
+        value={input}
+        onChange={(e) => setInput(parseInt(e.target.value))}
+      />
+
+      <p>{`Value: ${value}`}</p>
+      <p>{`Count: ${foo}`}</p>
     </div>
   );
 };
