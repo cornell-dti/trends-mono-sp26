@@ -34,7 +34,9 @@ const Semester = ({ name, allCourses }: SemesterProps) => {
 
       try {
         // Fetch detailed information from the API
+        const details = null; 
         // Update the cache with the fetched details
+        
         // Update the course in the courses array with the new details
 
 
