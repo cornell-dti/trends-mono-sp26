@@ -34,20 +34,26 @@ const Semester = ({ name, allCourses }: SemesterProps) => {
 
       try {
         // Fetch detailed information from the API
-        const details = null; 
+        const details = await fetchCourseDetails(
+          course.subject,
+          course.catalogNbr,
+        );
         // Update the cache with the fetched details
-        
+        setCourseDetailsCache({ ...courseDetailsCache, [courseKey]: details });
         // Update the course in the courses array with the new details
-
-
+        setCourses((prev) =>
+          prev.map((c) =>
+            c.subject === course.subject && c.catalogNbr === course.catalogNbr
+              ? { ...c, ...details }
+              : c,
+          ),
+        );
       } catch (error) {
         // Log the error and optionally show an error message to the user
-
-
+        console.error("error fetching course details: ", error); 
       } finally {
         // Clear loading state
-
-        
+        setLoading(prev => ({... prev, [courseKey]: false})); 
       }
     } else {
       // If we already have details, use them
