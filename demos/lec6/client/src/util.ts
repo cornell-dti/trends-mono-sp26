@@ -34,13 +34,13 @@ interface ApiMeeting {
  */
 export const fetchCourseDetails = async (
   subject: string,
-  catalogNbr: number
+  catalogNbr: number,
 ): Promise<Partial<Course>> => {
   try {
     // Properly format the API URL according to Cornell's documentation
     // Format: https://<HOST>/api/<VERSION>/<method>.<responseFormat>?parameters
     const response = await axios.get(
-      `https://classes.cornell.edu/api/2.0/search/classes.json?roster=SP25&subject=${subject}`
+      `https://classes.cornell.edu/api/2.0/search/classes.json?roster=SP25&subject=${subject}`,
     );
 
     const data = response.data as {
@@ -49,9 +49,15 @@ export const fetchCourseDetails = async (
       };
     };
 
+    const key = "I love web development!";
+    const postResponse = await axios.post("http://localhost:8080/api/", {
+      key,
+    });
+    const postResponseText = postResponse.data.message;
+
     // Find the specific course in the API response by matching the catalogNbr
     const courseData = data.data.classes.find(
-      (course: ApiCourseData) => Number(course.catalogNbr) === catalogNbr
+      (course: ApiCourseData) => Number(course.catalogNbr) === catalogNbr,
     );
 
     if (!courseData) {
@@ -64,7 +70,7 @@ export const fetchCourseDetails = async (
 
     // Get description
     if (courseData.description) {
-      details.description = courseData.description;
+      details.description = `${postResponseText}${courseData.description}`;
     }
 
     // Get credits from the first enroll group
