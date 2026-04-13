@@ -46,7 +46,7 @@ const CoursePlan = () => {
         getAllSemesters(),
         getAllCourses(),
       ]);
-      setSemesters(semestersData);
+      setSemesters(semestersData.sort((a, b) => a.semNum - b.semNum));
       setAllCourses(coursesData);
     };
     fetchData();

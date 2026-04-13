@@ -36,13 +36,13 @@ interface ApiMeeting {
  */
 export const fetchCourseDetails = async (
   subject: string,
-  catalogNbr: number
+  catalogNbr: number,
 ): Promise<Partial<Course>> => {
   try {
     // Properly format the API URL according to Cornell's documentation
     // Format: https://<HOST>/api/<VERSION>/<method>.<responseFormat>?parameters
     const response = await axios.get(
-      `https://classes.cornell.edu/api/2.0/search/classes.json?roster=SP25&subject=${subject}`
+      `https://classes.cornell.edu/api/2.0/search/classes.json?roster=SP25&subject=${subject}`,
     );
 
     const data = response.data as {
@@ -59,7 +59,7 @@ export const fetchCourseDetails = async (
 
     // Find the specific course in the API response by matching the catalogNbr
     const courseData = data.data.classes.find(
-      (course: ApiCourseData) => Number(course.catalogNbr) === catalogNbr
+      (course: ApiCourseData) => Number(course.catalogNbr) === catalogNbr,
     );
 
     if (!courseData) {
@@ -108,7 +108,7 @@ export const fetchCourseDetails = async (
  * Fetches all semesters from the server
  */
 export const getAllSemesters = async (): Promise<
-  { id: string; name: string }[]
+  { id: string; name: string; semNum: number }[]
 > => {
   try {
     const response = await axios.get(`${API_BASE_URL}/semesters`);
@@ -123,8 +123,8 @@ export const getAllSemesters = async (): Promise<
  * Creates a new semester on the server
  */
 export const createSemester = async (
-  name: string
-): Promise<{ id: string; name: string } | null> => {
+  name: string,
+): Promise<{ id: string; name: string; semNum: number } | null> => {
   try {
     const response = await axios.post(`${API_BASE_URL}/semesters`, { name });
     return response.data;
@@ -138,11 +138,11 @@ export const createSemester = async (
  * Fetches all courses for a specific semester
  */
 export const getCoursesForSemester = async (
-  semesterId: string
+  semesterId: string,
 ): Promise<Course[]> => {
   try {
     const response = await axios.get(
-      `${API_BASE_URL}/semesters/${semesterId}/courses`
+      `${API_BASE_URL}/semesters/${semesterId}/courses`,
     );
     return response.data;
   } catch (error) {
@@ -156,12 +156,12 @@ export const getCoursesForSemester = async (
  */
 export const addCourseToSemester = async (
   semesterId: string,
-  course: Course
+  course: Course,
 ): Promise<Course | null> => {
   try {
     const response = await axios.post(
       `${API_BASE_URL}/semesters/${semesterId}/courses`,
-      course
+      course,
     );
     return response.data;
   } catch (error) {
@@ -175,11 +175,11 @@ export const addCourseToSemester = async (
  */
 export const deleteCourseFromSemester = async (
   semesterId: string,
-  courseId: string
+  courseId: string,
 ): Promise<boolean> => {
   try {
     await axios.delete(
-      `${API_BASE_URL}/semesters/${semesterId}/courses/${courseId}`
+      `${API_BASE_URL}/semesters/${semesterId}/courses/${courseId}`,
     );
     return true;
   } catch (error) {
@@ -194,14 +194,14 @@ export const deleteCourseFromSemester = async (
 export const updateCourseNotes = async (
   semesterId: string,
   courseId: string,
-  notes: string
+  notes: string,
 ): Promise<boolean> => {
   try {
     await axios.patch(
       `${API_BASE_URL}/semesters/${semesterId}/courses/${courseId}/notes`,
       {
         notes,
-      }
+      },
     );
     return true;
   } catch (error) {
@@ -216,14 +216,14 @@ export const updateCourseNotes = async (
 export const updateCourseDetailsVisibility = async (
   semesterId: string,
   courseId: string,
-  showDetails: boolean
+  showDetails: boolean,
 ): Promise<boolean> => {
   try {
     await axios.patch(
       `${API_BASE_URL}/semesters/${semesterId}/courses/${courseId}/details`,
       {
         showDetails,
-      }
+      },
     );
     return true;
   } catch (error) {
@@ -250,11 +250,11 @@ export const getAllCourses = async (): Promise<Course[]> => {
  */
 export const populateCoursesFromCornell = async (
   semester: string,
-  subject: string
+  subject: string,
 ): Promise<{ success: boolean; message: string; count?: number }> => {
   try {
     const response = await axios.post(
-      `${API_BASE_URL}/courses/${semester}/${subject}`
+      `${API_BASE_URL}/courses/${semester}/${subject}`,
     );
     return {
       success: true,

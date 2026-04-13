@@ -3,12 +3,14 @@ import { useState } from "react";
 type CourseCardProps = {
   course: Course;
   onToggleDetails?: (course: Course) => void;
+  onHandleDelete: (course: Course) => void,
   isLoading?: boolean;
 };
 
 const CourseCard = ({
   course,
   onToggleDetails,
+  onHandleDelete,
   isLoading = false
 }: CourseCardProps) => {
   const [showDetails, setShowDetails] = useState(false);
@@ -21,6 +23,10 @@ const CourseCard = ({
     }
   };
 
+  const handleDeleteClick = () => {
+    onHandleDelete(course);
+  };
+
   return (
     <div className="courseCard">
       <div className="courseHeader">
@@ -30,6 +36,9 @@ const CourseCard = ({
         <p className="courseTitle">{course.titleShort}</p>
         <button className="detailsToggle" onClick={handleDetailsClick}>
           {showDetails ? "Hide Details" : "Show Details"}
+        </button>
+        <button className="deleteButton" onClick={handleDeleteClick}>
+          Delete Course
         </button>
       </div>
 

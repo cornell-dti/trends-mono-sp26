@@ -14,4 +14,5 @@ type Course = {
   whenOffered?: string;
   instructors?: Instructor[];
   showDetails?: boolean;
+  // TODO: add new Course Content for Firestore integration
 };

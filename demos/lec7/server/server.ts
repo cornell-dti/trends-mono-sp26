@@ -20,6 +20,8 @@ const port = 8080;
 app.use(cors());
 app.use(express.json());
 
+// lec6 demo API routes
+
 // GET
 app.get("/api/", async (req, res) => {
   res.send("Hello world!");
@@ -53,7 +55,7 @@ app.post("/api/courses/:semester/:subject", async (req, res) => {
 
     // Call Cornell API
     const response = await axios.get(
-      `https://classes.cornell.edu/api/2.0/search/classes.json?roster=${semester}&subject=${subject}`
+      `https://classes.cornell.edu/api/2.0/search/classes.json?roster=${semester}&subject=${subject}`,
     );
 
     const data = response.data as {
@@ -103,12 +105,8 @@ app.post("/api/courses/:semester/:subject", async (req, res) => {
           courseData.enrollGroups[0].classSections[0].meetings[0].instructors;
       }
 
+      // TODO: Add course to firestore database
       // Add to database
-      const courseId = await addCourseToDB(course);
-
-      if (courseId) {
-        addedCourses.push(course);
-      }
     }
 
     res.status(201).json({
@@ -209,7 +207,7 @@ app.patch(
     } catch (e: any) {
       res.status(400).json({ error: e.message });
     }
-  }
+  },
 );
 
 // PATCH update course details visibility
@@ -225,7 +223,7 @@ app.patch(
       const success = await updateCourseDetails(
         semesterId,
         courseId,
-        showDetails
+        showDetails,
       );
       if (!success) {
         throw new Error("Failed to update course details");
@@ -234,8 +232,19 @@ app.patch(
     } catch (e: any) {
       res.status(400).json({ error: e.message });
     }
-  }
+  },
 );
+
+// GET all courses from database when intially loading the app, avoiding unnecessary calls to Cornell API for course details that we have already stored in our database
+app.get("/api/courses", async (req, res) => {
+  try {
+    const courses = await fetchAllCourses();
+    console.log("call /api/courses endpoint");
+    res.status(200).json(courses);
+  } catch (e: any) {
+    res.status(400).json({ error: e.message });
+  }
+});
 
 app.listen(port, () => {
   console.log(`Listening on port ${port}`);
