@@ -21,13 +21,33 @@ export const fetchAllSemesters = async (): Promise<
     id: string;
   }[]
 > => {
-  return [];
+  try {
+    const collectionRef = collection(db, "semesters");
+    const docRef = await getDocs(collectionRef);
+    return docRef.docs.map((doc) => ({
+      id: doc.id,
+      semNum: doc.data().semNum,
+      name: doc.data().name,
+    }));
+  } catch (e) {
+    return [];
+  }
 };
 
 // TODO:
 // Add a new semester
 export const addSemester = async (name: string): Promise<string | null> => {
-  return null;
+  try {
+    const semNum = parseInt(name.match(/\d+/)?.[0] || "0", 10);
+
+    const docRef = await addDoc(collection(db, "semesters"), {
+      name,
+      semNum,
+    });
+    return docRef.id;
+  } catch (e) {
+    return null;
+  }
 };
 
 // TODO
@@ -35,7 +55,17 @@ export const addSemester = async (name: string): Promise<string | null> => {
 export const fetchCoursesForSemester = async (
   semesterId: string,
 ): Promise<Course[]> => {
-  return [];
+  try {
+    const collectionRef = collection(db, `semesters/${semesterId}/courses`);
+    const docRef = await getDocs(collectionRef);
+    return docRef.docs.map((doc) => ({
+      id: doc.id,
+      ...doc.data(),
+    })) as Course[];
+  } catch (e) {
+    console.error("Error fetching courses for semester:", e);
+    return [];
+  }
 };
 
 // TODO
@@ -45,16 +75,40 @@ export const addCourseToSemester = async (
   course: Course,
 ): Promise<string | null> => {
   // Two options
-  return null;
+
+  // Using Add Doc
+  // const { id, ...courseData } = course;
+  // const docRef = await addDoc(
+  //   collection(db, `semesters/${semesterId}/courses`),
+  //   courseData,
+  // );
+  // return docRef.id;
+
+  // Using setDoc (Upsert Pattern)
+  // comment out this code to use it
+  if (!course.id) {
+    console.error("Course must have an ID for setDoc approach");
+    return null;
+  }
+  const coursedocRef = doc(db, `semesters/${semesterId}/courses`, course.id);
+  await setDoc(coursedocRef, course);
+  return course.id;
 };
 
-// TODO: Try it yoursel!f!
+// TODO
 // Delete a course from a semester
 export const deleteCourseFromSemester = async (
   semesterId: string,
   courseId: string,
 ): Promise<boolean> => {
-  return false;
+  try {
+    const courseDocRef = doc(db, `semesters/${semesterId}/courses`, courseId);
+    await deleteDoc(courseDocRef);
+    return true;
+  } catch (e) {
+    console.error("Error deleting course from semester:", e);
+    return false;
+  }
 };
 
 // NOTE: Will not be implemented during lecture
@@ -95,7 +149,14 @@ export const updateCourseDetails = async (
 // Add a course to the courses collection
 // called by Cornell Roster API when we fetch courses from a particular semester, we also want to add it to the courses collection if it's not already there
 export const addCourseToDB = async (course: any): Promise<string | null> => {
-  return null;
+  try {
+    const courseCollection = collection(db, "courses");
+    const docRef = await addDoc(courseCollection, course);
+    return docRef.id;
+  } catch (error) {
+    console.error("error add course to db:", error);
+    return null;
+  }
 };
 
 // NOTE: Will not be implemented during lecture

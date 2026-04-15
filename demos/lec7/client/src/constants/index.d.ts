@@ -15,4 +15,6 @@ type Course = {
   instructors?: Instructor[];
   showDetails?: boolean;
   // TODO: add new Course Content for Firestore integration
+  id?: string;
+  notes?: string;
 };

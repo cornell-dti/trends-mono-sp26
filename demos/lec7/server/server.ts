@@ -22,25 +22,25 @@ app.use(express.json());
 
 // lec6 demo API routes
 
-// GET
-app.get("/api/", async (req, res) => {
-  res.send("Hello world!");
-});
+// // GET
+// app.get("/api/", async (req, res) => {
+//   res.send("Hello world!");
+// });
 
-// POST
-app.post("/api/", async (req, res) => {
-  try {
-    const key = req.body.key;
-    if (!key) {
-      throw new Error("key not found");
-    }
-    console.log(key);
-    // Do something with the key
-    res.json({ message: `Hello, world! Your key was ${key}` });
-  } catch (e: any) {
-    res.status(404).json({ error: e.message });
-  }
-});
+// // POST
+// app.post("/api/", async (req, res) => {
+//   try {
+//     const key = req.body.key;
+//     if (!key) {
+//       throw new Error("key not found");
+//     }
+//     console.log(key);
+//     // Do something with the key
+//     res.json({ message: `Hello, world! Your key was ${key}` });
+//   } catch (e: any) {
+//     res.status(404).json({ error: e.message });
+//   }
+// });
 
 // course-specific API routes
 
@@ -107,6 +107,11 @@ app.post("/api/courses/:semester/:subject", async (req, res) => {
 
       // TODO: Add course to firestore database
       // Add to database
+      const courseId = await addCourseToDB(course);
+
+      if (courseId) {
+        addedCourses.push(course);
+      }
     }
 
     res.status(201).json({
