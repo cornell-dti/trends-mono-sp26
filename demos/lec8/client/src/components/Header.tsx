@@ -14,8 +14,17 @@ const Header = () => {
    * 3. The `useAuth` hook will give you back a user, which has a displayName property.
    */
 
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const { user } = useAuth(); // TODO: explain useAuth in slide
+
   const handleLoginClick = async () => {
     // TODO
+    if (isLoggedIn) {
+      await signOut();
+    } else {
+      await signIn();
+    }
+    setIsLoggedIn(!isLoggedIn);
   };
 
   return (
@@ -27,7 +36,11 @@ const Header = () => {
         gap: "12px",
       }}
     >
-      <button onClick={handleLoginClick}>TODO!</button>
+      {/* <button onClick={handleLoginClick}>TODO!</button> */}
+      {isLoggedIn && user && <p> Hello, {user.displayName}</p>}
+      <button onClick={handleLoginClick}>
+        {isLoggedIn ? "Sign Out" : "Log In"}
+      </button>
     </div>
   );
 };
